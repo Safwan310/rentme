@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "118422065086",
+    "project_id": "rentme-653b9",
+    "storage_bucket": "rentme-653b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:118422065086:android:b6377e90137d2fe513b3ef",
+        "android_client_info": {
+          "package_name": "com.example.rent_my_stuff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "118422065086-v2uutlpn4npkd4ps3o9naeoaro840qnm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUdC30xvw7_VaFtghg5iDre9asGOOm0Cs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "118422065086-v2uutlpn4npkd4ps3o9naeoaro840qnm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

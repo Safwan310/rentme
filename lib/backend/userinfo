@@ -1,0 +1,13 @@
+class userinfo{
+  //Name,ID,email,
+  /*String? userName;
+  String? userId;
+  String? email;
+
+  String get user_name => userName;
+
+  String get user_id => userId;
+
+  String get email_id => email;
+*/
+}
