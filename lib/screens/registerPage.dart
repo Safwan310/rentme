@@ -100,12 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 Navigator.pushReplacement(context,
                                     MaterialPageRoute(builder: (context) => Home(uid)));
                               } else {
-                                Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                    result,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ));
+
                               }
                             });
                           }

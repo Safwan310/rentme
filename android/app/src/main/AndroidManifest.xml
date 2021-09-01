@@ -2,7 +2,9 @@
     package="com.example.rent_my_stuff">
    <application
         android:label="rent_my_stuff"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rent_my_stuff/screens/App.dart';
 import 'package:rent_my_stuff/screens/registerPage.dart';
 import 'package:rent_my_stuff/backend/authentication';
 import 'package:rent_my_stuff/backend/userinfo';
@@ -70,14 +71,9 @@ class _LoginPageState extends State<LoginPage> {
                                 final User? user = auth.currentUser;
                                 final uid = user!.uid;
                                 Navigator.pushReplacement(context,
-                                    MaterialPageRoute(builder: (context) => Home(uid)));
+                                    MaterialPageRoute(builder: (context) => App(uid)));
                               } else {
-                                Scaffold.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                    result,
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ));
+
                               }
                             });
                             }
