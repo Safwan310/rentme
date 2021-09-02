@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const primary_color = Color(0xff2377f4);
-const secondary_color = Color(0xffFF884B);
+const secondary_color = Color(0xffff6524);
 const field_color = Color(0xffE5E5E5);
 
 ThemeData theme(){
   return ThemeData(
+      inputDecorationTheme: InputDecorationTheme(
+        fillColor: Colors.white,
+      ),
       primaryColor: primary_color,
-      scaffoldBackgroundColor: Colors.indigo,
+
+      scaffoldBackgroundColor: primary_color,
       textTheme: texttheme(),
       textSelectionTheme: TextSelectionThemeData(
         selectionColor: primary_color,

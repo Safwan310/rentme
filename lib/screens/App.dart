@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rent_my_stuff/screens/AddProduct.dart';
 import 'package:rent_my_stuff/screens/Home.dart';
+import 'package:rent_my_stuff/theme.dart';
 
 class App extends StatefulWidget {
   String _userId = "";
@@ -32,26 +35,57 @@ class _AppState extends State<App> {
   @override
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
+    return CupertinoTabScaffold(
+
+      //body: _children[_currentIndex],
+      tabBar: CupertinoTabBar(
+        // onTap: onTabTapped,
+        // currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: "Home",
+            activeIcon: Icon(Icons.home,color: secondary_color,),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
             label: "Lend an Item",
+            activeIcon: Icon(Icons.add,color: secondary_color,),
+
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.verified_user),
+            icon: Icon(Icons.account_circle_outlined),
             label: "Profile",
+            activeIcon: Icon(Icons.account_circle_outlined,color: secondary_color,),
+
           )
         ],
       ),
+      tabBuilder: (context,index){
+        switch(index){
+          case 0:
+            return CupertinoTabView(builder: (context) {
+              return CupertinoPageScaffold(
+                child: Home(_userId),
+              );
+            }
+            );
+          case 1:
+            return CupertinoTabView(builder: (context) {
+              return CupertinoPageScaffold(
+                child: AddProduct(),
+              );
+            }
+            );
+            default:
+              return CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: Home(_userId),
+                );
+              }
+              );
+        }
+      },
     );
   }
 }

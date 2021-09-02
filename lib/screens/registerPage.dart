@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             children: [
               Text("Register",style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 48,color: Colors.white),),
-              // SizedBox(height: 65,),
+              SizedBox(height: 65,),
               Container(
                 width: double.infinity,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
