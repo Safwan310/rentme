@@ -223,37 +223,39 @@ class _AddProductState extends State<AddProduct> {
           border: Border.all(color: primary_color, style: BorderStyle.solid),
           borderRadius: BorderRadius.circular(20),
         ),
-        child: Expanded(
+        child: Container(
+            constraints: BoxConstraints(minHeight: 70, maxHeight: 150),
             child: ListView(
                 children: List.generate(selectedImages.length, (index) {
-          File image = selectedImages[index];
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 30,
-              width: MediaQuery.of(context).size.width * .8,
-              decoration: BoxDecoration(
-                  border: Border.all(color: primary_color),
-                  borderRadius: BorderRadius.circular(15)),
-              child: Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * .7,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(image.path.split('/').last,
-                          overflow: TextOverflow.ellipsis, style: TextStyle()),
-                    ),
+              File image = selectedImages[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 30,
+                  width: MediaQuery.of(context).size.width * .8,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: primary_color),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * .7,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Text(image.path.split('/').last,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle()),
+                        ),
+                      ),
+                      Expanded(
+                          child: GestureDetector(
+                              child: Icon(Icons.delete),
+                              onTap: () => setState(
+                                  () => selectedImages.removeAt(index))))
+                    ],
                   ),
-                  Expanded(
-                      child: GestureDetector(
-                          child: Icon(Icons.delete),
-                          onTap: () =>
-                              setState(() => selectedImages.removeAt(index))))
-                ],
-              ),
-            ),
-          );
-        }))));
+                ),
+              );
+            }))));
   }
 }
