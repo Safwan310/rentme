@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rent_my_stuff/screens/loginPage.dart';
 import 'package:rent_my_stuff/backend/authentication';
 import 'package:rent_my_stuff/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // import '../theme.dart';
 
@@ -11,19 +12,33 @@ import 'Home.dart';
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
+
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
   final formGlobalKey = GlobalKey < FormState > ();
   TextEditingController _username = TextEditingController();
   TextEditingController _email = TextEditingController();
+  TextEditingController _contactNo = TextEditingController();
   TextEditingController _pwd = TextEditingController();
   TextEditingController _cpwd = TextEditingController();
 
+  String? userId;
+
   @override
   Widget build(BuildContext context) {
+
+    addData(){
+      Map<String,dynamic> userData={'userName':_username.text,'email':_email.text,'contactNo':_contactNo.text};
+      print(userId);
+      FirebaseFirestore.instance.collection("user").doc(userId).set(userData);
+      print(FirebaseFirestore.instance.collection("user").doc(userId));
+      FirebaseFirestore.instance.collection("user").doc(userId).collection("rental_history").doc("rentalHistory");
+    }
+
     return Scaffold(
       backgroundColor: primary_color,
       body: SingleChildScrollView(
@@ -74,6 +89,17 @@ class _RegisterPageState extends State<RegisterPage> {
                             }
                           },
                         ),
+                        TextFormField(
+                          controller: _contactNo,
+                          decoration: InputDecoration(
+                              labelText: "Contact Number"
+                          ),
+                          validator: (num){
+                            if(num!.isEmpty){
+                              return 'Enter a valid number';
+                            }
+                          },
+                        ),
                         // SizedBox(height: 20,),
                         TextFormField(
                           controller: _pwd,
@@ -109,6 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
                               ),
                               onPressed: (){
+
                                 if (formGlobalKey.currentState!.validate()) {
                                   formGlobalKey.currentState!.save();
                                   // use the email provided here
@@ -118,20 +145,17 @@ class _RegisterPageState extends State<RegisterPage> {
                                     if (result == null) {
                                       final FirebaseAuth auth = FirebaseAuth.instance;
                                       final User? user = auth.currentUser;
-                                      final uid = user!.uid;
+                                      userId = user!.uid;
                                       //print(user.toString()+"=="+uid);
+                                      addData();
                                       Navigator.pushReplacement(context,
-                                          MaterialPageRoute(builder: (context) => Home(uid)));
+                                          MaterialPageRoute(builder: (context) => Home(userId!)));
                                     } else {
-                                      Scaffold.of(context).showSnackBar(SnackBar(
-                                        content: Text(
-                                          result,
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ));
+
                                     }
                                   });
                                 }
+
                               },
 
                               child: Text("Register",style: Theme.of(context).textTheme.button!.copyWith(fontSize:18,color: Colors.white),)),

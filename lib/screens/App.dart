@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_my_stuff/screens/AddProduct.dart';
 import 'package:rent_my_stuff/screens/Home.dart';
+import 'package:rent_my_stuff/screens/ProfilePage.dart';
 import 'package:rent_my_stuff/theme.dart';
 
 class App extends StatefulWidget {
@@ -71,9 +72,16 @@ class _AppState extends State<App> {
             }
             );
           case 1:
+          return CupertinoTabView(builder: (context) {
+            return CupertinoPageScaffold(
+              child: AddProduct(),
+            );
+          }
+          );
+          case 2:
             return CupertinoTabView(builder: (context) {
               return CupertinoPageScaffold(
-                child: AddProduct(),
+                  child: profile(),
               );
             }
             );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rent_my_stuff/screens/ListedItem.dart';
 import 'package:rent_my_stuff/theme.dart';
 
 class profile extends StatefulWidget {
@@ -113,7 +114,9 @@ class _profileState extends State<profile> {
                           height: 50,
                           width: MediaQuery.of(context).size.width,
                           child:ElevatedButton(
-                            onPressed: () => {},
+                            onPressed: () => {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => ListedItem()))
+                            },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
                               side: BorderSide(color: Colors.black38,style: BorderStyle.solid),
