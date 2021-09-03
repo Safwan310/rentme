@@ -1,13 +1,19 @@
 class userinfo{
-  //Name,ID,email,
-  /*String? userName;
+ // Name,ID,email,
+  String? userName;
   String? userId;
   String? email;
+  String? contactNo;
 
-  String get user_name => userName;
+  userinfo({this.userName,this.userId,this.email,this.contactNo});
 
-  String get user_id => userId;
+  String? get user_name => userName;
 
-  String get email_id => email;
-*/
+  String? get user_id => userId;
+
+  String? get email_id => email;
+
+  String? get contact_no => contactNo;
+
+
 }

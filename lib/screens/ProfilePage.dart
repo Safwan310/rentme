@@ -1,17 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_my_stuff/screens/ListedItem.dart';
 import 'package:rent_my_stuff/theme.dart';
 
 class profile extends StatefulWidget {
-  const profile({Key? key}) : super(key: key);
+  final String userId;
+  const profile(this.userId) ;
 
   @override
   _profileState createState() => _profileState();
 }
 
 class _profileState extends State<profile> {
+  Map<String, dynamic>? userDetails ;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchData(widget.userId);
+  }
+  void fetchData(String uid){
+    FirebaseFirestore.instance.collection("user").doc(uid).get().then((value) => userDetails = value.data()!);
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(userDetails);
     return Scaffold(
         appBar: AppBar(
         elevation:0.0,
@@ -49,15 +63,15 @@ class _profileState extends State<profile> {
                           color: secondary_color,
                           shape: BoxShape.circle,
                         ),
-                        child: Text("M",style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),),
+                        child: Text(userDetails!["userName"][0],style: Theme.of(context).textTheme.headline1!.copyWith(color: Colors.white),),
                       ),
                       SizedBox(width: 30,),
                       Expanded(child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children:[
-                          Text("Name",style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20,color: Colors.black)),
-                          Text("someone@gmail.com",style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20,color: Colors.black38)),
-                          Text("999999999",style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20,color: Colors.black38)),
+                          Text(userDetails!["userName"],style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20,color: Colors.black)),
+                          Text(userDetails!["email"],style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20,color: Colors.black38)),
+                          Text(userDetails!["contactNo"],style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20,color: Colors.black38)),
                         ]
                       ))
                     ],

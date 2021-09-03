@@ -32,7 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
 
     addData(){
-      Map<String,dynamic> userData={'userName':_username.text,'email':_email.text,'contactNo':_contactNo.text};
+      Map<String,dynamic> userData={'userName':_username.text,'email':_email.text,'contactNo':_contactNo.text,'rentalHistory':[],'wishList':[]};
       print(userId);
       FirebaseFirestore.instance.collection("user").doc(userId).set(userData);
       print(FirebaseFirestore.instance.collection("user").doc(userId));
@@ -149,7 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       //print(user.toString()+"=="+uid);
                                       addData();
                                       Navigator.pushReplacement(context,
-                                          MaterialPageRoute(builder: (context) => Home(userId!)));
+                                          MaterialPageRoute(builder: (context) => LoginPage()));
                                     } else {
 
                                     }

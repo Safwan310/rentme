@@ -15,9 +15,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
   final formGlobalKey = GlobalKey < FormState > ();
   TextEditingController _email = TextEditingController();
   TextEditingController _pwd = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

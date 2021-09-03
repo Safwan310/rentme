@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,13 @@ class _AddProductState extends State<AddProduct> {
   void _handleURLButtonPress(BuildContext context, var type) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ImageFromGalleryEx(type)));
+  }
+
+  void addProduct(){
+    String p_id = FirebaseFirestore.instance.collection("products").doc().id;
+    print(p_id);
+    Map<String, dynamic> product = {"productId":p_id,"productName":_productName.text,"productDesc":_productDesc.text,"productPrice":_productPrice.text};
+    FirebaseFirestore.instance.collection("products").doc(p_id).set(product);
   }
 
   @override
@@ -139,7 +147,9 @@ class _AddProductState extends State<AddProduct> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0)),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            addProduct();
+                          },
                           child: Text(
                             "Lend",
                             style: Theme.of(context)

@@ -79,9 +79,11 @@ class _AppState extends State<App> {
           }
           );
           case 2:
+            print(_userId);
             return CupertinoTabView(builder: (context) {
               return CupertinoPageScaffold(
-                  child: profile(),
+
+                  child: profile(_userId),
               );
             }
             );

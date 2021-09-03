@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({Key? key}) : super(key: key);
+  final String productId;
+  const ProductDetails({Key? key,required this.productId}) : super(key: key);
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
@@ -11,6 +13,18 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   bool selected = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchProducts();
+  }
+  Map<String, dynamic>? productInfo;
+  void fetchProducts() async{
+    await FirebaseFirestore.instance.collection('products').doc(widget.productId).get()
+        .then((field) => productInfo = field.data());
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +72,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                         children: [
-                          Text("Product Name",style: Theme.of(context).textTheme.headline1,),
+                          Text(productInfo!["productName"],style: Theme.of(context).textTheme.headline1,),
                           IconButton(onPressed: () {
                             setState(() {
                               selected = !selected;
@@ -67,13 +81,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ],
                       ),
                       SizedBox(height: 50),
-                      Text("osidfh[oaewihrjoewihfaoijsdghoewithjwoeifhjopsaifgh",style: Theme.of(context).textTheme.bodyText1,),
+                      Text(productInfo!["productDesc"],style: Theme.of(context).textTheme.bodyText1,),
                       SizedBox(height: 50),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text("Rental Price Rs.",style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20)),
-                            Text("5 Lakhs/day",style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20),),
+                            Text(productInfo!["productPrice"],style: Theme.of(context).textTheme.headline1!.copyWith(fontSize: 20),),
 
                           ]),
                       SizedBox(height: 50),
