@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
+import 'ImageFromGalleryEx.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({Key? key}) : super(key: key);
@@ -15,6 +16,11 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController _productName = TextEditingController();
   TextEditingController _productDesc = TextEditingController();
   TextEditingController _productPrice = TextEditingController();
+
+  void _handleURLButtonPress(BuildContext context, var type) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ImageFromGalleryEx(type)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +67,7 @@ class _AddProductState extends State<AddProduct> {
 
                     ),
                 ),
-                SizedBox(height: 50,),
+                SizedBox(height: 40,),
                 TextField(
                   controller: _productDesc,
                   keyboardType: TextInputType.multiline,
@@ -82,7 +88,57 @@ class _AddProductState extends State<AddProduct> {
                    // Added this
                   ),
                 ),
-                SizedBox(height: 50,),
+                SizedBox(height: 40,),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 70,
+
+                  child: ElevatedButton.icon(
+                    style: ButtonStyle(
+                      textStyle:MaterialStateProperty.all(TextStyle(color: Colors.black)),
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(color: primary_color)
+                          ),
+                    ),),
+                    
+                    icon: Icon(Icons.add,color: Colors.black,),
+                    label: Text('Add Images',style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.black),),
+                    onPressed: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                              height: MediaQuery.of(context).size.height/4,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  ListTile(
+                                    leading: new Icon(Icons.photo),
+                                    title: new Text('Gallery'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      _handleURLButtonPress(context, ImageSourceType.gallery);
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: new Icon(Icons.camera),
+                                    title: new Text('Camera'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      _handleURLButtonPress(context, ImageSourceType.camera);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                  ),
+                ),
+                SizedBox(height: 40,),
                 TextField(
                   controller: _productPrice,
                   decoration: InputDecoration(
@@ -97,7 +153,7 @@ class _AddProductState extends State<AddProduct> {
                       )
                   ),
                 ),
-                SizedBox(height: 50,),
+                SizedBox(height: 40,),
                 Container(
                   height: 50,
                   width: MediaQuery.of(context).size.width/1.5,
