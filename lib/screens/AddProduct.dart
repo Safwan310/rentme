@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,6 @@ class _AddProductState extends State<AddProduct> {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ImageFromGalleryEx(type)));
   }
-
   void addProduct(){
     String p_id = FirebaseFirestore.instance.collection("products").doc().id;
     print(p_id);
@@ -36,6 +36,16 @@ class _AddProductState extends State<AddProduct> {
     FirebaseFirestore.instance.collection("products").doc(p_id).set(product);
   }
 
+  Future uploadImageToFirebase(BuildContext context) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.ref().child("Img" + DateTime.now().toString());
+    UploadTask uploadTask = ref.putFile(selectedImages[0]);
+    late Future<String> url;
+    uploadTask.then((res) {
+     url = res.ref.getDownloadURL();
+    });
+    print("PHOTO URL"+url.toString());
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,6 +158,7 @@ class _AddProductState extends State<AddProduct> {
                                 borderRadius: BorderRadius.circular(18.0)),
                           ),
                           onPressed: () {
+                            uploadImageToFirebase(context);
                             addProduct();
                           },
                           child: Text(
