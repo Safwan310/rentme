@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:rent_my_stuff/screens/LendLoadingPage.dart';
 
 import '../theme.dart';
 import 'ImageFromGalleryEx.dart';
@@ -24,15 +26,22 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController _productDesc = TextEditingController();
   TextEditingController _productPrice = TextEditingController();
   List<File> selectedImages = [];
+  String? imgUrl;
 
   void _handleURLButtonPress(BuildContext context, var type) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ImageFromGalleryEx(type)));
   }
+
   void addProduct(){
     String p_id = FirebaseFirestore.instance.collection("products").doc().id;
     print(p_id);
-    Map<String, dynamic> product = {"productId":p_id,"productName":_productName.text,"productDesc":_productDesc.text,"productPrice":_productPrice.text};
+    setState(() {
+
+    });
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    print(userId);
+    Map<String, dynamic> product = {"productId":p_id,"productName":_productName.text,"productDesc":_productDesc.text,"productPrice":_productPrice.text,"image":imgUrl,"userId":userId};
     FirebaseFirestore.instance.collection("products").doc(p_id).set(product);
   }
 
@@ -40,11 +49,12 @@ class _AddProductState extends State<AddProduct> {
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child("Img" + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(selectedImages[0]);
-    late Future<String> url;
-    uploadTask.then((res) {
-     url = res.ref.getDownloadURL();
+    await uploadTask.then((res){
+      res.ref.getDownloadURL().then((value)=> imgUrl = value);
     });
-    print("PHOTO URL"+url.toString());
+    setState(() {
+
+    });
   }
   @override
   Widget build(BuildContext context) {
@@ -73,103 +83,107 @@ class _AddProductState extends State<AddProduct> {
               top: 30,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _productName,
-                      decoration: InputDecoration(
-                          labelText: "Enter product name",
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: primary_color, style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: secondary_color,
-                                style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    TextField(
-                      controller: _productDesc,
-                      keyboardType: TextInputType.multiline,
-                      textInputAction: TextInputAction.newline,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                          labelText: "Enter product description",
-                          isDense: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: primary_color, style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: secondary_color,
-                                style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(20),
-                          ) // Added this
-                          //contentPadding: EdgeInsets.all(50),
-                          // Added this
-                          ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    selectedImages.length == 0
-                        ? addImageButton()
-                        : selectedImageWidgets(),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    TextField(
-                      controller: _productPrice,
-                      decoration: InputDecoration(
-                          labelText: "Enter product price per day",
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: primary_color, style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: secondary_color,
-                                style: BorderStyle.solid),
-                            borderRadius: BorderRadius.circular(20),
-                          )),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width / 1.5,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            primary: secondary_color,
-                            elevation: 10.0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0)),
-                          ),
-                          onPressed: () {
-                            uploadImageToFirebase(context);
-                            addProduct();
-                          },
-                          child: Text(
-                            "Lend",
-                            style: Theme.of(context)
-                                .textTheme
-                                .button!
-                                .copyWith(fontSize: 18, color: Colors.white),
-                          )),
-                    ),
-                  ],
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: _productName,
+                        decoration: InputDecoration(
+                            labelText: "Enter product name",
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: primary_color, style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: secondary_color,
+                                  style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: _productDesc,
+                        keyboardType: TextInputType.multiline,
+                        textInputAction: TextInputAction.newline,
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                            labelText: "Enter product description",
+                            isDense: true,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: primary_color, style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: secondary_color,
+                                  style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(20),
+                            ) // Added this
+                            //contentPadding: EdgeInsets.all(50),
+                            // Added this
+                            ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      selectedImages.length == 0
+                          ? addImageButton()
+                          : selectedImageWidgets(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: _productPrice,
+                        decoration: InputDecoration(
+                            labelText: "Enter product price per day",
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: primary_color, style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: secondary_color,
+                                  style: BorderStyle.solid),
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width / 1.5,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: secondary_color,
+                              elevation: 10.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0)),
+                            ),
+                            onPressed: () async{
+                              await uploadImageToFirebase(context);
+                              addProduct();
+                              Navigator.pop(context);
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>LendLoadingPage()));
+                            },
+                            child: Text(
+                              "Lend",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .button!
+                                  .copyWith(fontSize: 18, color: Colors.white),
+                            )),
+                      ),
+                    ],
+                  ),
                 ),
               ))
         ]));

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_my_stuff/screens/ListedProductInfo.dart';
 import 'package:rent_my_stuff/screens/ProductDetails.dart';
@@ -5,15 +6,35 @@ import 'package:rent_my_stuff/screens/ProductDetails.dart';
 
 
 class ListedItem extends StatefulWidget {
-  const ListedItem({Key? key}) : super(key: key);
+  final String userId;
+  const ListedItem({Key? key, required this.userId}) : super(key: key);
 
   @override
   _ListedItemState createState() => _ListedItemState();
 }
-final List<Map> myProducts =
-List.generate(10, (index) => {"id": index, "name": "Product $index"})
-    .toList();
 class _ListedItemState extends State<ListedItem> {
+
+  @override
+  void initState(){
+    // TODO: implement initState
+    super.initState();
+    fetchProducts().whenComplete(() {
+      setState(){
+
+      }
+    });
+  }
+  late List<dynamic> myProducts;
+  Future fetchProducts() async{
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('products').where('ownerId', isEqualTo: widget.userId).get();
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    print(allData);
+    myProducts = allData;
+    setState(() {
+
+    });
+    print(allData);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

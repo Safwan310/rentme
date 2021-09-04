@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,9 @@ class _HomeState extends State<Home> {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('products').get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     allProducts = allData;
+    setState(() {
+
+    });
     print(allData);
   }
   @override
@@ -121,16 +125,23 @@ class _HomeState extends State<Home> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                  padding: EdgeInsets.all(10),
-                                  child: Container(
-                                    padding: EdgeInsets.all(95),
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage('assets/vc.jpg'),
-                                          fit: BoxFit.cover),
-                                    ),
-                                  )),
+                              Expanded(
+                                child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: allProducts[index]["image"],
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                              ),
+                                        ),
+                                      ),
+                                      placeholder: (context, url) => CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                    ),),
+                              ),
                               Padding(
                                   padding: EdgeInsets.all(10.0),
                                   child: Column(

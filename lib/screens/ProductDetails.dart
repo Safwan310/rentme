@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:rent_my_stuff/screens/ownerInfo.dart';
 
 import '../theme.dart';
 
@@ -70,7 +71,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     image: DecorationImage(
-                        image: AssetImage('assets/vc.jpg'), fit: BoxFit.cover),
+                        image: NetworkImage(productInfo!["image"]), fit: BoxFit.cover),
                   ),
                 )),
             Positioned(
@@ -138,7 +139,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(18.0)),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              print(productInfo);
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>OwnerInfo(userId: productInfo!["ownerId"])));
+                            },
                           ),
                         )
                       ],
