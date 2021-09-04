@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_my_stuff/screens/ListedItem.dart';
+import 'package:rent_my_stuff/screens/rentalHistory.dart';
 import 'package:rent_my_stuff/screens/userQr.dart';
+import 'package:rent_my_stuff/screens/wishList.dart';
 import 'package:rent_my_stuff/theme.dart';
 
 class profile extends StatefulWidget {
@@ -123,7 +125,10 @@ class _profileState extends State<profile> {
                               height: 50,
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
-                                onPressed: () => {},
+                                onPressed: () => {Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => WishList()))},
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.white,
                                   side: BorderSide(
@@ -160,7 +165,12 @@ class _profileState extends State<profile> {
                               height: 50,
                               width: MediaQuery.of(context).size.width,
                               child: ElevatedButton(
-                                onPressed: () => {},
+                                onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => RentalHistory(userId: widget.userId,)))
+                                },
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.white,
                                   side: BorderSide(

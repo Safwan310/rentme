@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_my_stuff/screens/ListedProductInfo.dart';
@@ -28,12 +29,11 @@ class _ListedItemState extends State<ListedItem> {
   Future fetchProducts() async{
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('products').where('ownerId', isEqualTo: widget.userId).get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    print(allData);
     myProducts = allData;
+    print(myProducts);
     setState(() {
 
     });
-    print(allData);
   }
   @override
   Widget build(BuildContext context) {
@@ -52,34 +52,40 @@ class _ListedItemState extends State<ListedItem> {
               itemCount: myProducts.length,
               itemBuilder: (BuildContext ctx, index) {
                 return InkWell(
-                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>ListedProductInfo()));},
+                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>ListedProductInfo(imgUrl: myProducts[index]["image"],productName: myProducts[index]["productName"],productDesc: myProducts[index]["productDesc"],)));},
                   child: Container(
                     alignment: Alignment.center,
                     child:  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Container(
+                        Expanded(
+                          child: Container(
                             padding: EdgeInsets.all(10),
-                            child: Container(
-                              padding: EdgeInsets.all(95),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage('assets/vc.jpg'),
-                                    fit: BoxFit.cover),
+                            child: CachedNetworkImage(
+                              imageUrl: myProducts[index]["image"],
+                              imageBuilder: (context, imageProvider) => Container(
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
-                            )),
+                              placeholder: (context, url) => CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                            ),),
+                        ),
                         Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  myProducts[index]["name"],
+                                  myProducts[index]["productName"],
                                   style: TextStyle(fontSize: 18.0),
                                 ),
                                 Text(
-                                  'Price',
-                                  style: TextStyle(fontSize: 18.0),
+                                  myProducts[index]["productPrice"],                                  style: TextStyle(fontSize: 18.0),
                                 ),
                               ]
                               ,

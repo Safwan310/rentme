@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:rent_my_stuff/screens/qrScan.dart';
 
 import '../theme.dart';
 class ListedProductInfo extends StatefulWidget {
-  const ListedProductInfo({Key? key}) : super(key: key);
+  final String imgUrl,productName,productDesc;
+  const ListedProductInfo({Key? key, required this.imgUrl,required this.productName,required this.productDesc}) : super(key: key);
 
   @override
   _ListedProductInfoState createState() => _ListedProductInfoState();
@@ -35,14 +38,24 @@ class _ListedProductInfoState extends State<ListedProductInfo> {
               width: MediaQuery.of(context).size.width/2,
               left: MediaQuery.of(context).size.width/4,
               child: Container(
-                padding: EdgeInsets.all(95),
+                padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
-                  image: DecorationImage(
-                      image: AssetImage('assets/vc.jpg'),
-                      fit: BoxFit.cover),
                 ),
-              )),
+                child: CachedNetworkImage(
+                  imageUrl: widget.imgUrl,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),),),
           Positioned(
               top: MediaQuery.of(context).size.height/3,
               height: MediaQuery.of(context).size.height,
@@ -52,9 +65,9 @@ class _ListedProductInfoState extends State<ListedProductInfo> {
                 child: Container(
                   child: Column(
                     children: [
-                      Text("Product Name",style: Theme.of(context).textTheme.headline1,),
+                      Text(widget.productName,style: Theme.of(context).textTheme.headline1,),
                       SizedBox(height: 50),
-                      Text("osidfh[oaewihrjoewihfaoijsdghoewithjwoeifhjopsaifgh",style: Theme.of(context).textTheme.bodyText1,),
+                      Text(widget.productDesc,style: Theme.of(context).textTheme.bodyText1,),
                       SizedBox(height: 50),
                       Container(
                         width: MediaQuery.of(context).size.width/2,
@@ -66,7 +79,7 @@ class _ListedProductInfoState extends State<ListedProductInfo> {
                             primary: secondary_color,
                             elevation: 10.0,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
-                          ), onPressed: () {  },),
+                          ), onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context)=>QRScan(),)); },),
                       )
                     ],
                   ),

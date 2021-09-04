@@ -41,6 +41,9 @@ class _AddProductState extends State<AddProduct> {
     });
     String userId = FirebaseAuth.instance.currentUser!.uid;
     print(userId);
+    if(imgUrl == null){
+
+    }
     Map<String, dynamic> product = {"productId":p_id,"productName":_productName.text,"productDesc":_productDesc.text,"productPrice":_productPrice.text,"image":imgUrl,"userId":userId};
     FirebaseFirestore.instance.collection("products").doc(p_id).set(product);
   }
@@ -49,13 +52,15 @@ class _AddProductState extends State<AddProduct> {
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref = storage.ref().child("Img" + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(selectedImages[0]);
-    await uploadTask.then((res){
-      res.ref.getDownloadURL().then((value)=> imgUrl = value);
-    });
-    setState(() {
-
-    });
-  }
+    uploadTask.whenComplete(() => imgUrl = ref.getDownloadURL().toString());
+    print(imgUrl);
+      }
+    // await uploadTask.then((res){
+    //   res.ref.getDownloadURL().then((value)=> imgUrl = value);
+    // });
+    // setState(() {
+    //
+    // });
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -224,6 +229,7 @@ class _AddProductState extends State<AddProduct> {
                                   selectedImages = images.paths
                                       .map((path) => File(path!))
                                       .toList();
+
                                 });
                               }
                             },
@@ -235,6 +241,7 @@ class _AddProductState extends State<AddProduct> {
                               Navigator.pop(context);
                               _handleURLButtonPress(
                                   context, ImageSourceType.camera);
+
                             },
                           ),
                         ],
