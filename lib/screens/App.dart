@@ -42,11 +42,14 @@ class _AppState extends State<App> {
       tabBar: CupertinoTabBar(
         // onTap: onTabTapped,
         // currentIndex: _currentIndex,
+        // backgroundColor: Colors.white,
+        activeColor: secondary_color,
+        inactiveColor: Colors.black54,
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: "Home",
-            activeIcon: Icon(Icons.home,color: secondary_color,),
+              activeIcon: Icon(Icons.home,color: secondary_color,),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),

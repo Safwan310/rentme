@@ -66,6 +66,7 @@ class _WishListState extends State<WishList> {
                       padding: EdgeInsets.all(10),
                       child: Container(
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
                           color: Colors.white,
                            boxShadow: [BoxShadow(
                               color: Colors.grey.withOpacity(0.5), //color of shadow
@@ -82,11 +83,11 @@ class _WishListState extends State<WishList> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
-                                width: MediaQuery.of(context).size.width/2.2,
-                                child: Image(image: CachedNetworkImageProvider(wishList![index]["productImage"]))
-
+                                width: MediaQuery.of(context).size.width/3,
+                                child: Image(image: CachedNetworkImageProvider(wishList![index]["productImage"])),
+                                padding: EdgeInsets.all(10),
                             ),
-                            Text(wishList![index]["productName"],textAlign: TextAlign.center,),
+                            Text(wishList![index]["productName"],style:Theme.of(context).textTheme.headline1!.copyWith(color:Colors.black87,fontSize:16,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

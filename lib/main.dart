@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rent_my_stuff/screens/AddProduct.dart';
 import 'package:rent_my_stuff/screens/App.dart';
 import 'package:rent_my_stuff/screens/ListedItem.dart';
+import 'package:rent_my_stuff/screens/WelcomePage.dart';
 import 'package:rent_my_stuff/screens/loginPage.dart';
 import 'package:rent_my_stuff/screens/registerPage.dart';
 import 'package:rent_my_stuff/theme.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: theme(),
-      home: RegisterPage(),
+      home: Welcome(),
     );
   }
 }

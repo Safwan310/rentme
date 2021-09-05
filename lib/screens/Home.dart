@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_my_stuff/screens/ProductDetails.dart';
 
+import '../theme.dart';
+
 
 class Home extends StatefulWidget {
   final String userId;
@@ -85,6 +87,7 @@ class _HomeState extends State<Home> {
                             width: 165,
                             child: TextField(
                               decoration: InputDecoration(
+                                focusedBorder: InputBorder.none,
                                 hintText: "Search for a product",
                                 fillColor: Colors.white,
                               ),
@@ -150,11 +153,11 @@ class _HomeState extends State<Home> {
                                     children: [
                                       Text(
                                         allProducts[index]["productName"],
-                                        style: TextStyle(fontSize: 12.0),
+                                        style: Theme.of(context).textTheme.headline1!.copyWith(color:Colors.black87,fontSize:16,fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        allProducts[index]["productPrice"],
-                                        style: TextStyle(fontSize: 12.0),
+                                        "Rs " +allProducts[index]["productPrice"],
+                                        style: Theme.of(context).textTheme.headline1!.copyWith(color:Colors.black87,fontSize:20,fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   )),
