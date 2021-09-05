@@ -116,7 +116,7 @@ class _profileState extends State<profile> {
                         ],
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 50,
                       ),
                       Expanded(
                         child: Column(
