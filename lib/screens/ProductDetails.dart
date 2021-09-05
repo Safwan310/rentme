@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rent_my_stuff/screens/ownerInfo.dart';
 
@@ -91,7 +92,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                               style: Theme.of(context).textTheme.headline1,
                             ),
                             IconButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  late List<dynamic>? wishList;
+                                  await FirebaseFirestore.instance.collection("user").doc(
+                                      FirebaseAuth.instance.currentUser!.uid).get().then((value) => wishList = value.get("wishList"));
+                                  wishList!.add({"productName":productInfo!["productName"],"productImage":productInfo!["image"],"productId":productInfo!["productId"]});
+                                  print(wishList);
+                                  await FirebaseFirestore.instance.collection("user").doc(
+                                      FirebaseAuth.instance.currentUser!.uid).update(
+                                       {"wishList":wishList});
+
                                   setState(() {
                                     selected = !selected;
                                   });
